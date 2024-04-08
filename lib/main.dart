@@ -1,5 +1,5 @@
 import 'package:ecommerce_app_2/provider/tabs_screen_provider.dart';
-import 'package:ecommerce_app_2/screens/tabs_screen.dart';
+import 'package:ecommerce_app_2/presentation/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,6 +1,7 @@
 import 'package:ecommerce_app_2/constants/image_assets.dart';
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/constants/text_style.dart';
+import 'package:ecommerce_app_2/presentation/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 
 class TitleAndTabBarWidget extends StatelessWidget {
@@ -38,31 +39,7 @@ class TitleAndTabBarWidget extends StatelessWidget {
                   .copyWith(color: Colors.white, height: 1.2),
             ),
             SizedBox(height: 20 * Sizeconfig.verticalBlock),
-            TabBar(
-              controller: _tabController,
-              tabAlignment: TabAlignment.start,
-              labelPadding: const EdgeInsets.only(right: 45),
-              dividerHeight: 0,
-              labelStyle: appStyle(fw: FontWeight.bold, size: 18)
-                  .copyWith(color: Colors.white),
-              isScrollable: true,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorWeight: 1,
-              indicatorColor: Colors.white,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.grey,
-              tabs: const <Widget>[
-                Tab(
-                  text: "Men shoes",
-                ),
-                Tab(
-                  text: "Women shoes",
-                ),
-                Tab(
-                  text: "Kids shoes",
-                ),
-              ],
-            ),
+            TabBartWidget(tabController: _tabController),
           ],
         ),
       ),
