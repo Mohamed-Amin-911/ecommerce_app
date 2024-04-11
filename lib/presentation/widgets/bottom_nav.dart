@@ -1,5 +1,5 @@
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:ecommerce_app_2/provider/tabs_screen_provider.dart';
+import 'package:ecommerce_app_2/controllers/tabs_screen_provider.dart';
 import 'package:ecommerce_app_2/presentation/widgets/bottom_nav_item.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';

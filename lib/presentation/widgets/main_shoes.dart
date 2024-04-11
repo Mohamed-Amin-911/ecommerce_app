@@ -1,5 +1,6 @@
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/models/sneakers_class.dart';
+import 'package:ecommerce_app_2/presentation/screens/product_screen.dart';
 import 'package:ecommerce_app_2/presentation/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 
@@ -29,13 +30,22 @@ class MainShoesWidget extends StatelessWidget {
                   itemCount: shoes.length,
                   itemBuilder: (context, index) {
                     final shoes = snapshot.data![index];
-                    return ProductCardWidget(
-                      id: shoes.id,
-                      category: shoes.category,
-                      colors: const [Colors.black],
-                      image: shoes.imageUrl[0],
-                      name: shoes.name,
-                      price: shoes.price,
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductScreen(sneaker: shoes)));
+                      },
+                      child: ProductCardWidget(
+                        id: shoes.id,
+                        category: shoes.category,
+                        colors: const [Colors.black],
+                        image: shoes.imageUrl[0],
+                        name: shoes.name,
+                        price: shoes.price,
+                      ),
                     );
                   });
             }

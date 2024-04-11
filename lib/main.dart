@@ -1,4 +1,5 @@
-import 'package:ecommerce_app_2/provider/tabs_screen_provider.dart';
+import 'package:ecommerce_app_2/controllers/product_provider.dart';
+import 'package:ecommerce_app_2/controllers/tabs_screen_provider.dart';
 import 'package:ecommerce_app_2/presentation/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TabsScreenProvider()),
+        ChangeNotifierProvider(create: (context) => ProductProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

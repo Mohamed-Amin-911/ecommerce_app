@@ -1,6 +1,6 @@
 import 'package:ecommerce_app_2/constants/color.dart';
 import 'package:ecommerce_app_2/constants/size_config.dart';
-import 'package:ecommerce_app_2/provider/tabs_screen_provider.dart';
+import 'package:ecommerce_app_2/controllers/tabs_screen_provider.dart';
 import 'package:ecommerce_app_2/presentation/screens/cart_screen.dart';
 import 'package:ecommerce_app_2/presentation/screens/home_screen.dart';
 import 'package:ecommerce_app_2/presentation/screens/profile_screen.dart';
