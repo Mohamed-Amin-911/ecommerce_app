@@ -19,6 +19,7 @@ class TabBartWidget extends StatelessWidget {
       labelStyle:
           appStyle(fw: FontWeight.bold, size: 18).copyWith(color: Colors.white),
       isScrollable: true,
+      // physics: const NeverScrollableScrollPhysics(),
       indicatorSize: TabBarIndicatorSize.label,
       indicatorWeight: 1,
       indicatorColor: Colors.white,

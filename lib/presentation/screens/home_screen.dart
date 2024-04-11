@@ -3,6 +3,7 @@ import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/constants/text_style.dart';
 import 'package:ecommerce_app_2/models/sneakers_class.dart';
 import 'package:ecommerce_app_2/presentation/screens/product_by_cat.dart';
+import 'package:ecommerce_app_2/presentation/widgets/show_latest_shoes_button.dart';
 import 'package:ecommerce_app_2/services/helper.dart';
 import 'package:ecommerce_app_2/presentation/widgets/latest_shoes.dart';
 import 'package:ecommerce_app_2/presentation/widgets/main_shoes.dart';
@@ -55,138 +56,93 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             Padding(
               padding: const EdgeInsets.only(
                   top: Sizeconfig.designHeight * 0.35, left: 10),
-              child: TabBarView(controller: _tabController, children: [
-                //men
-                Column(
+              child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _tabController,
                   children: [
-                    //main product
-                    MainShoesWidget(list: _male),
-                    SizedBox(height: 5 * Sizeconfig.verticalBlock),
-                    //latest shoes
-                    Row(
+                    //men
+                    Column(
                       children: [
-                        Text(
-                          " Latest shoes",
-                          style: appStyle(fw: FontWeight.bold, size: 24)
-                              .copyWith(color: Colors.black),
-                        ),
-                        const Spacer(),
+                        //main product
+                        MainShoesWidget(list: _male),
+                        SizedBox(height: 5 * Sizeconfig.verticalBlock),
+                        //latest shoes
                         Row(
                           children: [
                             Text(
-                              "show all",
-                              style: appStyle(fw: FontWeight.bold, size: 15)
-                                  .copyWith(color: Colors.grey),
+                              " Latest shoes",
+                              style: appStyle(fw: FontWeight.bold, size: 24)
+                                  .copyWith(color: Colors.black),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ProductByCatScreen(
-                                                initialIndex: 0),
-                                      ));
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_right_rounded,
-                                  size: 35,
-                                ))
+                            const Spacer(),
+                            SizedBox(
+                              height: 24 * Sizeconfig.verticalBlock,
+                              width: 99 * Sizeconfig.horizontalBlock,
+                              child:
+                                  const ShowLatestShoesbutton(initiallIndex: 0),
+                            ),
+                            SizedBox(width: 10 * Sizeconfig.horizontalBlock)
                           ],
                         ),
+                        SizedBox(height: 5 * Sizeconfig.verticalBlock),
+                        LatestShoesWidget(list: _male)
                       ],
                     ),
-                    LatestShoesWidget(list: _male)
-                  ],
-                ),
-                //women
-                Column(
-                  children: [
-                    //main product
-                    MainShoesWidget(list: _women),
-                    SizedBox(height: 5 * Sizeconfig.verticalBlock),
-                    //latest shoes
-                    Row(
+                    //women
+                    Column(
                       children: [
-                        Text(
-                          " Latest shoes",
-                          style: appStyle(fw: FontWeight.bold, size: 24)
-                              .copyWith(color: Colors.black),
-                        ),
-                        const Spacer(),
+                        //main product
+                        MainShoesWidget(list: _women),
+                        SizedBox(height: 5 * Sizeconfig.verticalBlock),
+                        //latest shoes
                         Row(
                           children: [
                             Text(
-                              "show all",
-                              style: appStyle(fw: FontWeight.bold, size: 15)
-                                  .copyWith(color: Colors.grey),
+                              " Latest shoes",
+                              style: appStyle(fw: FontWeight.bold, size: 24)
+                                  .copyWith(color: Colors.black),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ProductByCatScreen(
-                                                initialIndex: 1),
-                                      ));
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_right_rounded,
-                                  size: 35,
-                                ))
+                            const Spacer(),
+                            SizedBox(
+                                height: 24 * Sizeconfig.verticalBlock,
+                                width: 99 * Sizeconfig.horizontalBlock,
+                                child: const ShowLatestShoesbutton(
+                                    initiallIndex: 1)),
+                            SizedBox(width: 10 * Sizeconfig.horizontalBlock)
                           ],
                         ),
+                        SizedBox(height: 5 * Sizeconfig.verticalBlock),
+                        LatestShoesWidget(list: _women)
                       ],
                     ),
-                    LatestShoesWidget(list: _women)
-                  ],
-                ),
-
-                //kids
-                Column(
-                  children: [
-                    //main product
-                    MainShoesWidget(list: _kids),
-                    SizedBox(height: 5 * Sizeconfig.verticalBlock),
-                    //latest shoes
-                    Row(
+                    //kids
+                    Column(
                       children: [
-                        Text(
-                          " Latest shoes",
-                          style: appStyle(fw: FontWeight.bold, size: 24)
-                              .copyWith(color: Colors.black),
-                        ),
-                        const Spacer(),
+                        //main product
+                        MainShoesWidget(list: _kids),
+                        SizedBox(height: 5 * Sizeconfig.verticalBlock),
+                        //latest shoes
                         Row(
                           children: [
                             Text(
-                              "show all",
-                              style: appStyle(fw: FontWeight.bold, size: 15)
-                                  .copyWith(color: Colors.grey),
+                              " Latest shoes",
+                              style: appStyle(fw: FontWeight.bold, size: 24)
+                                  .copyWith(color: Colors.black),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ProductByCatScreen(
-                                                initialIndex: 2),
-                                      ));
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_right_rounded,
-                                  size: 35,
-                                ))
+                            const Spacer(),
+                            SizedBox(
+                                height: 24 * Sizeconfig.verticalBlock,
+                                width: 99 * Sizeconfig.horizontalBlock,
+                                child: const ShowLatestShoesbutton(
+                                    initiallIndex: 2)),
+                            SizedBox(width: 10 * Sizeconfig.horizontalBlock)
                           ],
                         ),
+                        SizedBox(height: 5 * Sizeconfig.verticalBlock),
+                        LatestShoesWidget(list: _kids)
                       ],
                     ),
-                    LatestShoesWidget(list: _kids)
-                  ],
-                ),
-              ]),
+                  ]),
             )
           ],
         ),

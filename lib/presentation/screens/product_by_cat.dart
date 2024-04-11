@@ -202,11 +202,14 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
                   top: Sizeconfig.designHeight * 0.24, left: 16, right: 12),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: TabBarView(controller: _tabController, children: [
-                  StaggeredGridViewDisplayWidget(list: _male),
-                  StaggeredGridViewDisplayWidget(list: _women),
-                  StaggeredGridViewDisplayWidget(list: _kids),
-                ]),
+                child: TabBarView(
+                    controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      StaggeredGridViewDisplayWidget(list: _male),
+                      StaggeredGridViewDisplayWidget(list: _women),
+                      StaggeredGridViewDisplayWidget(list: _kids),
+                    ]),
               ),
             )
           ],

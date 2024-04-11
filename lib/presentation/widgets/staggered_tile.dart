@@ -1,8 +1,10 @@
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/constants/text_style.dart';
+import 'package:ecommerce_app_2/controllers/product_provider.dart';
 import 'package:ecommerce_app_2/models/sneakers_class.dart';
 import 'package:ecommerce_app_2/presentation/screens/product_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StagggeredTile extends StatefulWidget {
   const StagggeredTile({super.key, required this.sneaker});
@@ -16,6 +18,8 @@ class _StagggeredTileState extends State<StagggeredTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        Provider.of<ProductProvider>(context, listen: false).shoeSizes =
+            widget.sneaker.sizes;
         Navigator.push(
             context,
             MaterialPageRoute(
