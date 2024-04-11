@@ -5,3 +5,5 @@
 ![3](https://github.com/Mohamed-Amin-911/ecommerce_app/assets/141561179/89e7e74c-6283-4635-8f93-83a2c4b5ea67)
 ![4](https://github.com/Mohamed-Amin-911/ecommerce_app/assets/141561179/06af1fe7-3847-42cb-99e4-f032d0cb2e31)
 ![5](https://github.com/Mohamed-Amin-911/ecommerce_app/assets/141561179/7ffaa220-80a2-4721-874c-cbfac6a0f5e2)
+![6](https://github.com/Mohamed-Amin-911/ecommerce_app/assets/141561179/d2044449-8af8-4ad8-bd49-a0497ea96b22)
+![7](https://github.com/Mohamed-Amin-911/ecommerce_app/assets/141561179/cb8a9cc6-cde5-49f5-860a-3447b5fcf62a)
