@@ -14,6 +14,10 @@ class StagggeredTile extends StatefulWidget {
 }
 
 class _StagggeredTileState extends State<StagggeredTile> {
+  onGoBack() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -21,13 +25,22 @@ class _StagggeredTileState extends State<StagggeredTile> {
         Provider.of<ProductProvider>(context, listen: false).shoeSizes =
             widget.sneaker.sizes;
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ProductScreen(sneaker: widget.sneaker)));
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProductScreen(sneaker: widget.sneaker)))
+            .then((value) => onGoBack());
       },
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                spreadRadius: 1,
+                offset: Offset(0, 2),
+                blurRadius: 6,
+                color: Color.fromARGB(42, 0, 0, 0))
+          ],
           borderRadius: BorderRadius.all(Radius.circular(16)),
           color: Colors.white,
         ),

@@ -3,7 +3,6 @@ import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/controllers/product_provider.dart';
 import 'package:ecommerce_app_2/models/constants.dart';
 import 'package:ecommerce_app_2/models/sneakers_class.dart';
-import 'package:ecommerce_app_2/presentation/screens/favourites_Screen.dart';
 import 'package:ecommerce_app_2/presentation/widgets/add_to_cart_button.dart';
 import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/product_screen_title.dart';
 import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/category_rating.dart';
@@ -18,11 +17,19 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
-class ProductScreen extends StatelessWidget {
-  ProductScreen({super.key, required this.sneaker});
+class ProductScreen extends StatefulWidget {
+  const ProductScreen({super.key, required this.sneaker});
   final SneakerClass sneaker;
+
+  @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
   final pageController = PageController();
+
   final _cartBox = Hive.box("cart_box");
+
   Future<void> _createCart(Map<String, dynamic> newCart) async {
     await _cartBox.add(newCart);
   }
@@ -34,20 +41,63 @@ class ProductScreen extends StatelessWidget {
     getFavourites();
   }
 
+  List<dynamic> fav = [];
   getFavourites() {
     final favData = _favBox.keys.map((key) {
       final item = _favBox.get(key);
       return {
         "key": key,
         "id": item["id"],
+        "category": item["category"],
+        "name": item["name"],
+        "image": item["image"],
+        "price": item["price"],
+        "quantity": item["quantity"],
+        "sizes": item["sizes"],
       };
     }).toList();
     favors = favData.toList();
     ids = favors.map((e) => e["id"]).toList();
+    setState(() {});
+  }
+
+  _deleteFav(int key) async {
+    await _favBox.delete(key);
+    final favData = _favBox.keys.map((key) {
+      final item = _favBox.get(key);
+      return {
+        "key": key,
+        "id": item["id"],
+        "category": item["category"],
+        "name": item["name"],
+        "image": item["image"],
+        "price": item["price"],
+        "quantity": item["quantity"],
+        "sizes": item["sizes"],
+      };
+    }).toList();
+    favors = favData.toList();
+    ids = favors.map((e) => e["id"]).toList();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final favData = _favBox.keys.map((key) {
+      final item = _favBox.get(key);
+      return {
+        "key": key,
+        "id": item["id"],
+        "category": item["category"],
+        "name": item["name"],
+        "image": item["image"],
+        "price": item["price"],
+        "quantity": item["quantity"],
+        "sizes": item["sizes"],
+      };
+    }).toList();
+    final fav = favData.where((e) => e["id"] == widget.sneaker.id);
+
     return Scaffold(
       backgroundColor: Pallete.bg,
       body: CustomScrollView(
@@ -66,30 +116,30 @@ class ProductScreen extends StatelessWidget {
                 children: [
                   //image display
                   ImageDisplayWidget(
-                      sneaker: sneaker, pageController: pageController),
+                      sneaker: widget.sneaker, pageController: pageController),
                   //favourite icon
                   Positioned(
                       top: Sizeconfig.screenHeight * 0.09,
                       right: 20,
                       child: IconButton(
                           onPressed: () async {
-                            if (ids.contains(sneaker.id)) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const FavouritesScreen(),
-                                  ));
+                            if (ids.contains(widget.sneaker.id)) {
+                              _deleteFav(fav.first["key"]);
+                              setState(() {});
                             } else {
                               await _createFav({
-                                "id": sneaker.id,
-                                "name": sneaker.name,
-                                "image": sneaker.imageUrl[0],
-                                "price": sneaker.price,
+                                "id": widget.sneaker.id,
+                                "name": widget.sneaker.name,
+                                "image": widget.sneaker.imageUrl[0],
+                                "price": widget.sneaker.price,
+                                "key": widget.key,
+                                "category": widget.sneaker.category,
+                                "quantity": widget.sneaker.id,
+                                "sizes": widget.sneaker.sizes,
                               });
                             }
                           },
-                          icon: ids.contains(sneaker.id)
+                          icon: ids.contains(widget.sneaker.id)
                               ? const Icon(
                                   Icons.favorite_rounded,
                                   color: Colors.black,
@@ -99,7 +149,7 @@ class ProductScreen extends StatelessWidget {
                                   color: Colors.black,
                                 ))),
                   //circle avatar display
-                  CircleAvatarWidget(sneaker: sneaker),
+                  CircleAvatarWidget(sneaker: widget.sneaker),
 
                   // info container
                   Positioned(
@@ -133,13 +183,15 @@ class ProductScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     //name
-                                    NameWidget(sneaker: sneaker),
+                                    NameWidget(sneaker: widget.sneaker),
                                     //category and rating
-                                    CategoryAndRatingWidget(sneaker: sneaker),
+                                    CategoryAndRatingWidget(
+                                        sneaker: widget.sneaker),
                                     SizedBox(
                                         height: 20 * Sizeconfig.verticalBlock),
                                     //price and colors
-                                    PriceAndColorsWidget(sneaker: sneaker),
+                                    PriceAndColorsWidget(
+                                        sneaker: widget.sneaker),
                                     SizedBox(
                                         height: 20 * Sizeconfig.verticalBlock),
                                     //sizes
@@ -155,9 +207,9 @@ class ProductScreen extends StatelessWidget {
                                         height: 10 * Sizeconfig.verticalBlock),
 
                                     //title
-                                    TitleWidget(sneaker: sneaker),
+                                    TitleWidget(sneaker: widget.sneaker),
                                     //description
-                                    DescriptionWidget(sneaker: sneaker),
+                                    DescriptionWidget(sneaker: widget.sneaker),
                                     SizedBox(
                                         height: 20 * Sizeconfig.verticalBlock),
 
@@ -165,12 +217,12 @@ class ProductScreen extends StatelessWidget {
                                     AddToCartButton(
                                       ontap: () async {
                                         _createCart({
-                                          "id": sneaker.id,
-                                          "name": sneaker.name,
-                                          "price": sneaker.price,
-                                          "image": sneaker.imageUrl[0],
+                                          "id": widget.sneaker.id,
+                                          "name": widget.sneaker.name,
+                                          "price": widget.sneaker.price,
+                                          "image": widget.sneaker.imageUrl[0],
                                           "quantity": 1,
-                                          "category": sneaker.category,
+                                          "category": widget.sneaker.category,
                                           "sizes": Provider.of<ProductProvider>(
                                                   context,
                                                   listen: false)

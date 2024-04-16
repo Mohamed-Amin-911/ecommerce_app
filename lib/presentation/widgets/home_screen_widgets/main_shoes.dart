@@ -6,7 +6,7 @@ import 'package:ecommerce_app_2/presentation/widgets/home_screen_widgets/product
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MainShoesWidget extends StatelessWidget {
+class MainShoesWidget extends StatefulWidget {
   const MainShoesWidget({
     super.key,
     required this.list,
@@ -15,11 +15,25 @@ class MainShoesWidget extends StatelessWidget {
   final Future<List<SneakerClass>> list;
 
   @override
+  State<MainShoesWidget> createState() => _MainShoesWidgetState();
+}
+
+class _MainShoesWidgetState extends State<MainShoesWidget> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  onGoBack() {
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: Sizeconfig.designHeight * 0.45,
       child: FutureBuilder(
-          future: list,
+          future: widget.list,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -27,6 +41,7 @@ class MainShoesWidget extends StatelessWidget {
               return Text("Error ${snapshot.error}");
             } else {
               final shoes = snapshot.data!;
+
               return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: shoes.length,
@@ -41,10 +56,11 @@ class MainShoesWidget extends StatelessWidget {
                             .shoeSizes = shoes.sizes;
 
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ProductScreen(sneaker: shoes)));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductScreen(sneaker: shoes)))
+                            .then((value) => onGoBack());
                       },
                       child: ProductCardWidget(
                         id: shoes.id,

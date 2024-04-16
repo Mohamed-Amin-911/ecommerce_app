@@ -1,13 +1,12 @@
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/constants/text_style.dart';
 import 'package:ecommerce_app_2/models/constants.dart';
-import 'package:ecommerce_app_2/presentation/screens/favourites_Screen.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class ProductCardWidget extends StatefulWidget {
-  ProductCardWidget({
+  const ProductCardWidget({
     super.key,
     required this.image,
     required this.name,
@@ -57,8 +56,43 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     getFavourites();
   }
 
+  _deleteFav(int key) async {
+    await _favBox.delete(key);
+    final favData = _favBox.keys.map((key) {
+      final item = _favBox.get(key);
+      return {
+        "key": key,
+        "id": item["id"],
+        "category": item["category"],
+        "name": item["name"],
+        "image": item["image"],
+        "price": item["price"],
+        "quantity": item["quantity"],
+        "sizes": item["sizes"],
+      };
+    }).toList();
+    favors = favData.toList();
+    ids = favors.map((e) => e["id"]).toList();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    // final favData = _favBox.keys.map((key) {
+    //   final item = _favBox.get(key);
+    //   return {
+    //     "key": key,
+    //     "id": item["id"],
+    //     "category": item["category"],
+    //     "name": item["name"],
+    //     "image": item["image"],
+    //     "price": item["price"],
+    //     "quantity": item["quantity"],
+    //     "sizes": item["sizes"],
+    //   };
+    // }).toList();
+    // final fav = favData.where((e) => e["id"] == widget.id);
+
     bool selected = true;
     return Stack(
       children: [
@@ -81,14 +115,18 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
         //image
         Positioned(
           top: -30,
+          right: 0,
+          left: 0,
           child: Container(
-            margin: const EdgeInsets.only(left: 30),
+            margin: const EdgeInsets.symmetric(horizontal: 45),
             child: Image.network(
                 width: Sizeconfig.designWidth * 0.6,
                 fit: BoxFit.fill,
                 widget.image),
           ),
         ),
+
+        //data
         Positioned(
           top: 150,
           child: Container(
@@ -155,37 +193,18 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 ],
               )),
         ),
-        //favourite
-        Positioned(
-            right: 20,
-            top: 20,
-            child: GestureDetector(
-              onTap: () async {
-                if (ids.contains(widget.id)) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const FavouritesScreen(),
-                      ));
-                } else {
-                  await _createFav({
-                    "key": widget.key,
-                    "id": widget.id,
-                    "name": widget.name,
-                    "category": widget.category,
-                    "price": widget.price,
-                    "image": widget.image,
-                  });
-                }
-              },
-              child: Icon(
-                ids.contains(widget.id)
-                    ? Icons.favorite_rounded
-                    : Icons.favorite_border_rounded,
-                color: Colors.black,
-                size: 30,
-              ),
-            )),
+
+        // favourite
+        // Positioned(
+        //     right: 20,
+        //     top: 20,
+        //     child: Icon(
+        //       ids.contains(widget.id)
+        //           ? Icons.favorite_rounded
+        //           : Icons.favorite_border_rounded,
+        //       color: Colors.black,
+        //       size: 30,
+        //     )),
       ],
     );
   }
