@@ -2,10 +2,10 @@ import 'package:ecommerce_app_2/constants/color.dart';
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/constants/text_style.dart';
 import 'package:ecommerce_app_2/models/sneakers_class.dart';
-import 'package:ecommerce_app_2/presentation/widgets/bg_tab_bar.dart';
+import 'package:ecommerce_app_2/presentation/widgets/latest_product_screen_widgets/bg_tab_bar.dart';
 import 'package:ecommerce_app_2/presentation/widgets/category_button.dart';
 import 'package:ecommerce_app_2/presentation/widgets/custom_spacer.dart';
-import 'package:ecommerce_app_2/presentation/widgets/staggered_gridview_display.dart';
+import 'package:ecommerce_app_2/presentation/widgets/latest_product_screen_widgets/staggered_gridview_display.dart';
 import 'package:ecommerce_app_2/services/helper.dart';
 import 'package:flutter/material.dart';
 

@@ -1,6 +1,6 @@
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/models/sneakers_class.dart';
-import 'package:ecommerce_app_2/presentation/widgets/staggered_tile.dart';
+import 'package:ecommerce_app_2/presentation/widgets/latest_product_screen_widgets/staggered_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';

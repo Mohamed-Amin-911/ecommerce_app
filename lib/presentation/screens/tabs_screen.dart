@@ -2,21 +2,22 @@ import 'package:ecommerce_app_2/constants/color.dart';
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/controllers/tabs_screen_provider.dart';
 import 'package:ecommerce_app_2/presentation/screens/cart_screen.dart';
+import 'package:ecommerce_app_2/presentation/screens/favourites_screen.dart';
 import 'package:ecommerce_app_2/presentation/screens/home_screen.dart';
 import 'package:ecommerce_app_2/presentation/screens/profile_screen.dart';
 import 'package:ecommerce_app_2/presentation/screens/search_Screen.dart';
-import 'package:ecommerce_app_2/presentation/widgets/bottom_nav.dart';
+import 'package:ecommerce_app_2/presentation/widgets/tabs_screen_wdgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-  final List<Widget> pages = const [
-    HomeScreen(),
-    SearchScreen(),
-    HomeScreen(),
+  MainScreen({super.key});
+  final List<Widget> pages = [
+    const HomeScreen(),
+    const SearchScreen(),
+    const FavouritesScreen(),
     CartScreen(),
-    ProfileScreen()
+    const ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {

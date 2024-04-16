@@ -1,25 +1,50 @@
 import 'package:ecommerce_app_2/constants/color.dart';
 import 'package:ecommerce_app_2/constants/size_config.dart';
-import 'package:ecommerce_app_2/constants/text_style.dart';
 import 'package:ecommerce_app_2/controllers/product_provider.dart';
+import 'package:ecommerce_app_2/models/constants.dart';
 import 'package:ecommerce_app_2/models/sneakers_class.dart';
+import 'package:ecommerce_app_2/presentation/screens/favourites_Screen.dart';
 import 'package:ecommerce_app_2/presentation/widgets/add_to_cart_button.dart';
-import 'package:ecommerce_app_2/presentation/widgets/product_screen_title.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/product_screen_title.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/category_rating.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/circle_avatar.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/descrition_widget.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/image_display.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/name.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/prices_color.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/sizes_widget.dart';
+import 'package:ecommerce_app_2/presentation/widgets/product_screen_widgets/title_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
-class ProductScreen extends StatefulWidget {
-  const ProductScreen({super.key, required this.sneaker});
+class ProductScreen extends StatelessWidget {
+  ProductScreen({super.key, required this.sneaker});
   final SneakerClass sneaker;
-  @override
-  State<ProductScreen> createState() => _ProductScreenState();
-}
-
-class _ProductScreenState extends State<ProductScreen> {
   final pageController = PageController();
+  final _cartBox = Hive.box("cart_box");
+  Future<void> _createCart(Map<String, dynamic> newCart) async {
+    await _cartBox.add(newCart);
+  }
+
+  final _favBox = Hive.box("fav_box");
+
+  Future<void> _createFav(Map<String, dynamic> addFav) async {
+    await _favBox.add(addFav);
+    getFavourites();
+  }
+
+  getFavourites() {
+    final favData = _favBox.keys.map((key) {
+      final item = _favBox.get(key);
+      return {
+        "key": key,
+        "id": item["id"],
+      };
+    }).toList();
+    favors = favData.toList();
+    ids = favors.map((e) => e["id"]).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,64 +65,41 @@ class _ProductScreenState extends State<ProductScreen> {
               background: Stack(
                 children: [
                   //image display
-                  SizedBox(
-                    height: Sizeconfig.screenHeight * 0.4,
-                    width: Sizeconfig.screenWidth,
-                    child: PageView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.sneaker.imageUrl.length,
-                      controller: pageController,
-                      onPageChanged: (value) {
-                        Provider.of<ProductProvider>(context, listen: false)
-                            .activePage = value;
-                      },
-                      itemBuilder: (context, index) {
-                        //image
-                        return Container(
-                          margin: const EdgeInsetsDirectional.only(top: 50),
-                          height: Sizeconfig.screenHeight * 0.1,
-                          width: Sizeconfig.screenWidth,
-                          color: Pallete.bg,
-                          child: Image.network(
-                            widget.sneaker.imageUrl[index],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  ImageDisplayWidget(
+                      sneaker: sneaker, pageController: pageController),
                   //favourite icon
                   Positioned(
                       top: Sizeconfig.screenHeight * 0.09,
                       right: 20,
                       child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.favorite_border_rounded,
-                            color: Colors.black,
-                          ))),
+                          onPressed: () async {
+                            if (ids.contains(sneaker.id)) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const FavouritesScreen(),
+                                  ));
+                            } else {
+                              await _createFav({
+                                "id": sneaker.id,
+                                "name": sneaker.name,
+                                "image": sneaker.imageUrl[0],
+                                "price": sneaker.price,
+                              });
+                            }
+                          },
+                          icon: ids.contains(sneaker.id)
+                              ? const Icon(
+                                  Icons.favorite_rounded,
+                                  color: Colors.black,
+                                )
+                              : const Icon(
+                                  Icons.favorite_border_rounded,
+                                  color: Colors.black,
+                                ))),
                   //circle avatar display
-                  Positioned(
-                      top: Sizeconfig.screenHeight * 0.34,
-                      right: 0,
-                      left: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                            widget.sneaker.imageUrl.length,
-                            (index) => Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 4),
-                                  child: CircleAvatar(
-                                    radius: 5,
-                                    backgroundColor:
-                                        Provider.of<ProductProvider>(context)
-                                                    .activePage !=
-                                                index
-                                            ? Colors.grey
-                                            : Colors.black,
-                                  ),
-                                )),
-                      )),
+                  CircleAvatarWidget(sneaker: sneaker),
 
                   // info container
                   Positioned(
@@ -112,10 +114,10 @@ class _ProductScreenState extends State<ProductScreen> {
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
-                                    blurRadius: 5,
-                                    color: Colors.black,
-                                    spreadRadius: 10,
-                                    offset: Offset(0, -3))
+                                    spreadRadius: 1,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 6,
+                                    color: Color.fromARGB(42, 0, 0, 0))
                               ]),
                           height: Sizeconfig.screenHeight * 0.645,
                           width: Sizeconfig.screenWidth,
@@ -131,151 +133,17 @@ class _ProductScreenState extends State<ProductScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     //name
-                                    Text(widget.sneaker.name,
-                                        style: appStyle(
-                                                fw: FontWeight.bold, size: 40)
-                                            .copyWith(color: Colors.black)),
+                                    NameWidget(sneaker: sneaker),
                                     //category and rating
-                                    Row(
-                                      children: [
-                                        //category
-                                        Text(widget.sneaker.category,
-                                            style: appStyle(
-                                                    fw: FontWeight.w500,
-                                                    size: 20)
-                                                .copyWith(color: Colors.grey)),
-                                        const Spacer(),
-                                        //rating
-                                        RatingBar.builder(
-                                          initialRating: 4,
-                                          allowHalfRating: true,
-                                          minRating: 1,
-                                          itemCount: 5,
-                                          itemSize: 22,
-                                          itemPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 1),
-                                          direction: Axis.horizontal,
-                                          itemBuilder: (context, index) =>
-                                              const Icon(
-                                            Icons.star_rate_rounded,
-                                            size: 25,
-                                            color: Colors.black,
-                                          ),
-                                          onRatingUpdate: (value) {},
-                                        ),
-                                      ],
-                                    ),
+                                    CategoryAndRatingWidget(sneaker: sneaker),
                                     SizedBox(
                                         height: 20 * Sizeconfig.verticalBlock),
                                     //price and colors
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        //price
-                                        Text("\$${widget.sneaker.price}",
-                                            style: appStyle(
-                                                    fw: FontWeight.w600,
-                                                    size: 26)
-                                                .copyWith(color: Colors.black)),
-                                        //colors
-                                        Row(
-                                          children: [
-                                            Text("Colors",
-                                                style: appStyle(
-                                                        fw: FontWeight.w500,
-                                                        size: 18)
-                                                    .copyWith(
-                                                        color: Colors.black)),
-                                            SizedBox(
-                                                width: 5 *
-                                                    Sizeconfig.horizontalBlock),
-                                            const CircleAvatar(
-                                              radius: 7,
-                                              backgroundColor: Colors.black,
-                                            ),
-                                            SizedBox(
-                                                width: 5 *
-                                                    Sizeconfig.horizontalBlock),
-                                            const CircleAvatar(
-                                              radius: 7,
-                                              backgroundColor: Colors.red,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                    PriceAndColorsWidget(sneaker: sneaker),
                                     SizedBox(
                                         height: 20 * Sizeconfig.verticalBlock),
                                     //sizes
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Select sizes",
-                                            style: appStyle(
-                                                    fw: FontWeight.w600,
-                                                    size: 20)
-                                                .copyWith(color: Colors.black)),
-                                        SizedBox(
-                                            height:
-                                                10 * Sizeconfig.verticalBlock),
-                                        SizedBox(
-                                          height: 40 * Sizeconfig.verticalBlock,
-                                          child: ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                Provider.of<ProductProvider>(
-                                                        context)
-                                                    .shoeSizes
-                                                    .length,
-                                            itemBuilder: (context, index) {
-                                              final shoeSizes =
-                                                  Provider.of<ProductProvider>(
-                                                          context)
-                                                      .shoeSizes;
-                                              return ChoiceChip(
-                                                disabledColor:
-                                                    const Color.fromARGB(
-                                                        143, 158, 158, 158),
-                                                shape: const CircleBorder(),
-                                                backgroundColor:
-                                                    shoeSizes[index]
-                                                            ["isSelected"]
-                                                        ? Colors.black
-                                                        : const Color.fromARGB(
-                                                            143, 158, 158, 158),
-                                                label: Text(
-                                                    "${shoeSizes[index]["size"]}",
-                                                    style: appStyle(
-                                                            fw: FontWeight.w500,
-                                                            size: 15)
-                                                        .copyWith(
-                                                            color: shoeSizes[
-                                                                        index][
-                                                                    "isSelected"]
-                                                                ? Colors.white
-                                                                : Colors
-                                                                    .black)),
-                                                selected: shoeSizes[index]
-                                                    ["isSelected"],
-                                                side: BorderSide.none,
-                                                showCheckmark: false,
-                                                selectedColor: Colors.black,
-                                                onSelected: (value) {
-                                                  Provider.of<ProductProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .toggleCheck(index);
-                                                },
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    const SizesWidget(),
                                     SizedBox(
                                         height: 10 * Sizeconfig.verticalBlock),
                                     const Divider(
@@ -287,30 +155,34 @@ class _ProductScreenState extends State<ProductScreen> {
                                         height: 10 * Sizeconfig.verticalBlock),
 
                                     //title
-                                    SizedBox(
-                                      width: 0.8 * Sizeconfig.screenWidth,
-                                      child: Text(
-                                        widget.sneaker.title,
-                                        style: appStyle(
-                                                fw: FontWeight.bold, size: 19)
-                                            .copyWith(color: Colors.black),
-                                      ),
-                                    ),
+                                    TitleWidget(sneaker: sneaker),
                                     //description
-                                    Text(
-                                      widget.sneaker.description,
-                                      textAlign: TextAlign.justify,
-                                      // maxLines: 5,
-                                      style: appStyle(
-                                              fw: FontWeight.normal, size: 14)
-                                          .copyWith(color: Colors.black),
-                                    ),
+                                    DescriptionWidget(sneaker: sneaker),
                                     SizedBox(
                                         height: 20 * Sizeconfig.verticalBlock),
 
                                     //add to cart button
                                     AddToCartButton(
-                                      ontap: () {},
+                                      ontap: () async {
+                                        _createCart({
+                                          "id": sneaker.id,
+                                          "name": sneaker.name,
+                                          "price": sneaker.price,
+                                          "image": sneaker.imageUrl[0],
+                                          "quantity": 1,
+                                          "category": sneaker.category,
+                                          "sizes": Provider.of<ProductProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .sizes
+                                              .last
+                                        });
+                                        Provider.of<ProductProvider>(context,
+                                                listen: false)
+                                            .unToggleCheck();
+
+                                        Navigator.pop(context);
+                                      },
                                       label: "Add To Cart",
                                     ),
                                     SizedBox(

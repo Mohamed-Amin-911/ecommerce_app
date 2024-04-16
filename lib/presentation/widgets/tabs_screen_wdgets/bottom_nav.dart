@@ -1,6 +1,6 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:ecommerce_app_2/controllers/tabs_screen_provider.dart';
-import 'package:ecommerce_app_2/presentation/widgets/bottom_nav_item.dart';
+import 'package:ecommerce_app_2/presentation/widgets/tabs_screen_wdgets/bottom_nav_item.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -38,8 +38,8 @@ class BottomNavWidget extends StatelessWidget {
                   .pageIndex = 2;
             },
             icon: pageIndex == 2
-                ? Ionicons.add_circle
-                : Ionicons.add_circle_outline),
+                ? Icons.favorite_rounded
+                : Icons.favorite_border_rounded),
         BottomNavItemWidget(
             function: () {
               Provider.of<TabsScreenProvider>(context, listen: false)

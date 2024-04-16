@@ -2,14 +2,12 @@ import 'package:ecommerce_app_2/constants/color.dart';
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/constants/text_style.dart';
 import 'package:ecommerce_app_2/models/sneakers_class.dart';
-import 'package:ecommerce_app_2/presentation/screens/product_by_cat.dart';
-import 'package:ecommerce_app_2/presentation/widgets/show_latest_shoes_button.dart';
+import 'package:ecommerce_app_2/presentation/widgets/home_screen_widgets/show_latest_shoes_button.dart';
 import 'package:ecommerce_app_2/services/helper.dart';
-import 'package:ecommerce_app_2/presentation/widgets/latest_shoes.dart';
-import 'package:ecommerce_app_2/presentation/widgets/main_shoes.dart';
-import 'package:ecommerce_app_2/presentation/widgets/title_&_tabbar.dart';
+import 'package:ecommerce_app_2/presentation/widgets/home_screen_widgets/latest_shoes.dart';
+import 'package:ecommerce_app_2/presentation/widgets/home_screen_widgets/main_shoes.dart';
+import 'package:ecommerce_app_2/presentation/widgets/home_screen_widgets/title_&_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

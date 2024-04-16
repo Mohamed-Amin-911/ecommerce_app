@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ProductProvider extends ChangeNotifier {
-  int _activePage = 0;
   List<dynamic> _shoeSizes = [];
   List<dynamic> get shoeSizes => _shoeSizes;
   set shoeSizes(List<dynamic> newSizes) {
@@ -13,6 +12,8 @@ class ProductProvider extends ChangeNotifier {
     for (int i = 0; i < _shoeSizes.length; i++) {
       if (i == index) {
         _shoeSizes[i]["isSelected"] = !_shoeSizes[i]["isSelected"];
+      } else {
+        _shoeSizes[i]["isSelected"] = false;
       }
     }
     notifyListeners();
@@ -25,9 +26,17 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int _activePage = 0;
   int get activePage => _activePage;
   set activePage(int newIndex) {
     _activePage = newIndex;
+    notifyListeners();
+  }
+
+  List<dynamic> _sizes = [];
+  List<dynamic> get sizes => _sizes;
+  set sizes(List<dynamic> newSizes) {
+    _sizes = newSizes;
     notifyListeners();
   }
 }

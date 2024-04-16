@@ -1,9 +1,13 @@
 import 'package:ecommerce_app_2/constants/size_config.dart';
 import 'package:ecommerce_app_2/constants/text_style.dart';
+import 'package:ecommerce_app_2/models/constants.dart';
+import 'package:ecommerce_app_2/presentation/screens/favourites_Screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hive_flutter/adapters.dart';
 
-class ProductCardWidget extends StatelessWidget {
-  const ProductCardWidget({
+class ProductCardWidget extends StatefulWidget {
+  ProductCardWidget({
     super.key,
     required this.image,
     required this.name,
@@ -18,6 +22,41 @@ class ProductCardWidget extends StatelessWidget {
   final String price;
   final List<Color> colors;
   final String id;
+
+  @override
+  State<ProductCardWidget> createState() => _ProductCardWidgetState();
+}
+
+class _ProductCardWidgetState extends State<ProductCardWidget> {
+  final _favBox = Hive.box("fav_box");
+
+  Future<void> _createFav(Map<String, dynamic> addFav) async {
+    await _favBox.add(addFav);
+    getFavourites();
+  }
+
+  getFavourites() {
+    final favData = _favBox.keys.map((key) {
+      final item = _favBox.get(key);
+      return {
+        "key": key,
+        "id": item["id"],
+        // "name": item["name"],
+        // "image": item["image"],
+        // "price": item["price"],
+      };
+    }).toList();
+    favors = favData.toList();
+    ids = favors.map((e) => e["id"]).toList();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getFavourites();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool selected = true;
@@ -45,7 +84,9 @@ class ProductCardWidget extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.only(left: 30),
             child: Image.network(
-                width: Sizeconfig.designWidth * 0.6, fit: BoxFit.fill, image),
+                width: Sizeconfig.designWidth * 0.6,
+                fit: BoxFit.fill,
+                widget.image),
           ),
         ),
         Positioned(
@@ -63,7 +104,7 @@ class ProductCardWidget extends StatelessWidget {
                       SizedBox(
                         height: 80,
                         child: Text(
-                          name,
+                          widget.name,
                           style: appStyle(fw: FontWeight.bold, size: 36)
                               .copyWith(color: Colors.black, height: 1.1),
                         ),
@@ -71,7 +112,7 @@ class ProductCardWidget extends StatelessWidget {
                       SizedBox(height: 7 * Sizeconfig.verticalBlock),
                       //category
                       Text(
-                        category,
+                        widget.category,
                         maxLines: 2,
                         style: appStyle(fw: FontWeight.bold, size: 17)
                             .copyWith(color: Colors.grey, height: 1.1),
@@ -85,7 +126,7 @@ class ProductCardWidget extends StatelessWidget {
                     children: [
                       //price
                       Text(
-                        "\$$price",
+                        "\$${widget.price}",
                         style: appStyle(fw: FontWeight.bold, size: 36)
                             .copyWith(color: Colors.black, height: 1.1),
                       ),
@@ -115,13 +156,35 @@ class ProductCardWidget extends StatelessWidget {
               )),
         ),
         //favourite
-        const Positioned(
+        Positioned(
             right: 20,
             top: 20,
-            child: Icon(
-              Icons.favorite_border_rounded,
-              color: Colors.black,
-              size: 30,
+            child: GestureDetector(
+              onTap: () async {
+                if (ids.contains(widget.id)) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FavouritesScreen(),
+                      ));
+                } else {
+                  await _createFav({
+                    "key": widget.key,
+                    "id": widget.id,
+                    "name": widget.name,
+                    "category": widget.category,
+                    "price": widget.price,
+                    "image": widget.image,
+                  });
+                }
+              },
+              child: Icon(
+                ids.contains(widget.id)
+                    ? Icons.favorite_rounded
+                    : Icons.favorite_border_rounded,
+                color: Colors.black,
+                size: 30,
+              ),
             )),
       ],
     );
