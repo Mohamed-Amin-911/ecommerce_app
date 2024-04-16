@@ -86,7 +86,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
             SizedBox(height: 20 * Sizeconfig.verticalBlock),
             //list view
             SizedBox(
-              height: 0.65 * Sizeconfig.screenHeight,
+              height: 0.70 * Sizeconfig.screenHeight,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
                 child: ListView.builder(
@@ -181,18 +181,22 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                                     width:
                                                         Sizeconfig.screenWidth,
                                                     decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .grey.shade100,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                              color: Colors.grey
-                                                                  .shade500,
-                                                              spreadRadius: 5,
-                                                              blurRadius: 1,
-                                                              offset:
-                                                                  const Offset(
-                                                                      0, 1))
-                                                        ]),
+                                                      boxShadow: const [
+                                                        BoxShadow(
+                                                            spreadRadius: 1,
+                                                            offset:
+                                                                Offset(0, 2),
+                                                            blurRadius: 6,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    42,
+                                                                    0,
+                                                                    0,
+                                                                    0))
+                                                      ],
+                                                      color:
+                                                          Colors.grey.shade100,
+                                                    ),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment

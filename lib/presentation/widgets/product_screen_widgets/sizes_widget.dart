@@ -4,11 +4,16 @@ import 'package:ecommerce_app_2/controllers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SizesWidget extends StatelessWidget {
+class SizesWidget extends StatefulWidget {
   const SizesWidget({
     super.key,
   });
 
+  @override
+  State<SizesWidget> createState() => _SizesWidgetState();
+}
+
+class _SizesWidgetState extends State<SizesWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,12 +57,6 @@ class SizesWidget extends StatelessWidget {
                     Provider.of<ProductProvider>(context, listen: false)
                         .sizes
                         .clear();
-                    // Provider.of<ProductProvider>(
-                    //         context,
-                    //         listen: false)
-                    //     .sizes
-                    //     .remove(shoeSizes[index]
-                    //         ["size"]);
                   } else {
                     Provider.of<ProductProvider>(context, listen: false)
                         .sizes
@@ -70,6 +69,7 @@ class SizesWidget extends StatelessWidget {
                       .sizes);
                   Provider.of<ProductProvider>(context, listen: false)
                       .toggleCheck(index);
+                  setState(() {});
                 },
               );
             },
