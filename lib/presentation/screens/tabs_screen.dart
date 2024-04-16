@@ -24,6 +24,8 @@ class MainScreen extends StatelessWidget {
     int pageIndex = Provider.of<TabsScreenProvider>(context).pageIndex;
     Sizeconfig().init(context);
     return Scaffold(
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Pallete.bg,
       body: pages[pageIndex],
       bottomNavigationBar: SafeArea(
