@@ -11,13 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
-  MainScreen({super.key});
-  final List<Widget> pages = [
-    const HomeScreen(),
-    const SearchScreen(),
-    const FavouritesScreen(),
+  const MainScreen({super.key});
+  final List<Widget> pages = const [
+    HomeScreen(),
+    SearchScreen(),
+    FavouritesScreen(),
     CartScreen(),
-    const ProfileScreen()
+    ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,13 @@ class MainScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8),
           margin: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-              color: Colors.black, borderRadius: BorderRadius.circular(16)),
+          decoration: BoxDecoration(boxShadow: const [
+            BoxShadow(
+                spreadRadius: 1,
+                offset: Offset(0, 1),
+                blurRadius: 6,
+                color: Color.fromARGB(42, 0, 0, 0))
+          ], color: Colors.black, borderRadius: BorderRadius.circular(16)),
           child: BottomNavWidget(pageIndex: pageIndex),
         ),
       )),

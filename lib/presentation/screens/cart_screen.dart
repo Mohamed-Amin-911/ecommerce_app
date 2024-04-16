@@ -131,25 +131,15 @@ class _CartScreenState extends State<CartScreen> {
                                                 final male = snapshot1.data!;
                                                 final women = snapshot2.data!;
                                                 final kids = snapshot3.data!;
+                                                final allProducts =
+                                                    male + women + kids;
                                                 final SneakerClass product;
-                                                if (data["category"] ==
-                                                    "Men's Running") {
-                                                  product = male
-                                                      .where((e) =>
-                                                          e.id == data["id"])
-                                                      .first;
-                                                } else if (data["category"] ==
-                                                    "Women's Running") {
-                                                  product = women
-                                                      .where((e) =>
-                                                          e.id == data["id"])
-                                                      .first;
-                                                } else {
-                                                  product = kids
-                                                      .where((e) =>
-                                                          e.id == data["id"])
-                                                      .first;
-                                                }
+
+                                                product = allProducts
+                                                    .where((e) =>
+                                                        e.id == data["id"])
+                                                    .first;
+
                                                 Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
