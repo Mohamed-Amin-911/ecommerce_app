@@ -2,6 +2,7 @@ import 'package:ecommerce_app_2/controllers/product_provider.dart';
 import 'package:ecommerce_app_2/controllers/tabs_screen_provider.dart';
 import 'package:ecommerce_app_2/presentation/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
@@ -23,15 +24,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TabsScreenProvider()),
         ChangeNotifierProvider(create: (context) => ProductProvider()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'eCommerce App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-          useMaterial3: true,
-        ),
-        home: MainScreen(),
-      ),
+      child: ScreenUtilInit(
+          designSize: const Size(375, 812),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'eCommerce App',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+                useMaterial3: true,
+              ),
+              home: const MainScreen(),
+            );
+          }),
     );
   }
 }

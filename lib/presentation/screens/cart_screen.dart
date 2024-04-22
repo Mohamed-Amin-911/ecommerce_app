@@ -95,6 +95,7 @@ class _CartScreenState extends State<CartScreen> {
                     padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
                       final data = cart[index];
+
                       //cart item
                       return Padding(
                           padding: const EdgeInsets.all(8),
